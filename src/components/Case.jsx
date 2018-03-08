@@ -24,8 +24,8 @@ const Case = (props) => {
                 x={props.x + props.width / 2}
                 y={props.y + props.height / 2}
                 style={{ textAnchor: "middle", dominantBaseline: "central" }}
-                font-family="Verdana"
-                font-size="75"
+                fontFamily="Verdana"
+                fontSize="75"
             >
                 {props.content}
             </text>
