@@ -33,11 +33,28 @@ class Grid extends React.Component {
     window.removeEventListener("keypress", this.onKeyPress.bind(this));
   }
 
+  Delta(delta) {
+    return (
+      (this.state.mysel + this.props.x * this.props.y + delta) %
+      (this.props.x * this.props.y)
+    );
+  }
+
   onKeyPress(ev) {
-    if (this.state.mysel) {
-      let lst = this.state.list;
-      lst[this.state.mysel] = ev.key;
-      this.setState({ list: lst });
+    if (this.state.mysel !== null) {
+      if (ev.key === "ArrowLeft") {
+        this.setState({ mysel: this.Delta(-1) });
+      } else if (ev.key === "ArrowRight") {
+        this.setState({ mysel: this.Delta(1) });
+      } else if (ev.key === "ArrowUp") {
+        this.setState({ mysel: this.Delta(-this.props.x) });
+      } else if (ev.key === "ArrowDown") {
+        this.setState({ mysel: this.Delta(this.props.x) });
+      } else {
+        let lst = this.state.list;
+        lst[this.state.mysel] = ev.key;
+        this.setState({ list: lst });
+      }
     }
   }
 
