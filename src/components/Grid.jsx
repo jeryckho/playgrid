@@ -16,7 +16,10 @@ class Grid extends React.Component {
   }
 
   updateWidth() {
-    this.setState({ width: window.innerWidth });
+    this.setState({
+      width: window.innerWidth,
+      height: this.props.y * window.innerWidth / this.props.x
+    });
   }
 
   componentWillMount() {
@@ -25,12 +28,12 @@ class Grid extends React.Component {
 
   componentDidMount() {
     window.addEventListener("resize", this.updateWidth.bind(this));
-    window.addEventListener("keypress", this.onKeyPress.bind(this));
+    window.addEventListener("keydown", this.onKeyPress.bind(this));
   }
 
   componentWillUnmount() {
     window.removeEventListener("resize", this.updateWidth.bind(this));
-    window.removeEventListener("keypress", this.onKeyPress.bind(this));
+    window.removeEventListener("keydown", this.onKeyPress.bind(this));
   }
 
   Delta(delta) {
@@ -50,7 +53,7 @@ class Grid extends React.Component {
         this.setState({ mysel: this.Delta(-this.props.x) });
       } else if (ev.key === "ArrowDown") {
         this.setState({ mysel: this.Delta(this.props.x) });
-      } else {
+      } else if (ev.key.length === 1) {
         let lst = this.state.list;
         lst[this.state.mysel] = ev.key;
         this.setState({ list: lst });
@@ -61,7 +64,7 @@ class Grid extends React.Component {
   myClick(v) {
     return () => {
       if (v === this.state.mysel) {
-        let msg = prompt("Message", this.state.list[v]);
+        let msg = prompt("Entrez une lettre", this.state.list[v]);
         if (msg !== null) {
           let lst = this.state.list;
           lst[v] = msg[0];
@@ -97,7 +100,13 @@ class Grid extends React.Component {
       }
     }
     return (
-      <svg id="play-grid" viewBox={viewBox} width={this.state.width}>
+      <svg
+        id="play-grid"
+        viewBox={viewBox}
+        width={this.state.width}
+        height={this.state.height}
+        preserveAspectRatio={"none"}
+      >
         {CaseListe}
       </svg>
     );
